@@ -1,8 +1,10 @@
 package com.example.simplecalculator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,12 +14,38 @@ public class MainActivity extends AppCompatActivity {
     Double firstValues, secondValues, result_operation;
     String operation;
 
+    Double saveValues;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         result = findViewById(R.id.result_field);
+        Log.d("anim", "onCreate");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("anim", "onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("anim", "onResume");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            saveValues = savedInstanceState.getDouble("saveValues");
+            firstValues = saveValues;
+            result.setText(String.valueOf(firstValues));
+        }
+        Log.d("anim", "onRestoreInstanceState: " + saveValues);
     }
 
     public void onNumberClick(View view) {
@@ -132,5 +160,32 @@ public class MainActivity extends AppCompatActivity {
     public void divideOperation() {
         result_operation = firstValues / secondValues;
         result.setText(result_operation.toString());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("anim", "onPause");
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (firstValues != null) {
+            outState.putDouble("saveValues", firstValues);
+        }
+        Log.d("anim", "onSaveInstanceState");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("anim", "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("anim", "onDestroy");
     }
 }
